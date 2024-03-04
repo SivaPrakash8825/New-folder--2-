@@ -69,6 +69,7 @@ router.get("/getbycity/:city", (req, res) => {
 
 router.get("/getiddata/:id", (req, res) => {
   const { id } = req.params;
+
   db.query("select * from Packersdata where user_id=?", [id], (err, rows) => {
     if (err) console.log(err);
     res.send({ data: rows });
