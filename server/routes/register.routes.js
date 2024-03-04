@@ -14,7 +14,7 @@ router.post("/register", async (req, res) => {
 
   try {
     db.query(
-      `select * from ${role} where email = ? or phoneno = ?`,
+      `select * from users where email = ? or phoneno = ?`,
       [email, phoneno],
       async (err, result) => {
         if (err) console.log(err);
@@ -30,7 +30,7 @@ router.post("/register", async (req, res) => {
 
           const hashpass = await bcryptjs.hash(password, 10);
           db.query(
-            ` insert into ${role}(id,email,phoneno,name,role,password,city) values(?,?,?,?,?,?,?)`,
+            ` insert into users(id,email,phoneno,name,role,password,city) values(?,?,?,?,?,?,?)`,
             [uqId, email, phoneno, name, role, hashpass, city],
             (err, result) => {
               if (err) console.log(err);
@@ -184,19 +184,20 @@ router.get("/me", async (req, res) => {
           break;
       }
 
-      if (arole1 != "users") {
-      } else {
-        db.query(
-          `select p.id,p.price,p.age,p.experience,p.isVerified,p.plan,u.id,u.email,u.phoneno,u.name,u.role,u.city,u.regDate from ${arole1} p right join users u on p.user_id = u.id`,
-          [decodeData.id],
-          (err, result) => {
-            if (err) {
-              console.log(err);
-            }
-            console.log(result);
-          }
-        );
-      }
+      // if (arole1 != "users") {
+      // } else {
+      //   console.log(arole1);
+      //   db.query(
+      //     `select p.id,p.price,p.age,p.experience,p.isVerified,p.plan,u.id,u.email,u.phoneno,u.name,u.role,u.city,u.regDate from ${arole1} p right join users u on p.user_id = u.id`,
+      //     [decodeData.id],
+      //     (err, result) => {
+      //       if (err) {
+      //         console.log(err);
+      //       }
+      //       console.log(result);
+      //     }
+      //   );
+      // }
       res.send(decodeData);
     }
   } catch (error) {

@@ -57,9 +57,24 @@ router.post("/updateprice", (req, res) => {
     });
   }
 });
+router.get("/getbycity/:city", (req, res) => {
+  const { city } = req.params;
+  console.log(city);
+  db.query("select * from paintersdata where city=?", [city], (err, rows) => {
+    if (err) {
+      return res.send({
+        msg: "no data",
+      });
+      console.log(err);
+    } else {
+      return res.send(rows);
+    }
+  });
+});
 
 router.get("/getiddata/:id", (req, res) => {
   const { id } = req.params;
+  console.log(id);
   db.query(
     "select l.id,l.email,l.phoneno,l.name,l.city,l.regDate,p.isVerified,p.id as pid,p.price,p.age,p.experience from users l left join Paintersdata p on l.id=p.user_id and p.id = ?",
     [id],

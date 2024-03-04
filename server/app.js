@@ -30,7 +30,7 @@ app.use("/api/painter", require("./routes/painter.routes"));
 app.use("/api/packers", require("./routes/packers.routes"));
 app.use("/api/designer", require("./routes/designer.routes"));
 app.use("/api/electrician", require("./routes/electrician.routes"));
-app.use("/api/painter", require("./routes/painter.routes"));
+// app.use("/api/painter", require("./routes/painter.routes"));
 app.use("/api/others", require("./routes/others.routes"));
 // app.use("/api/me", require("./routes/register.routes"));
 // app.use("/home", require("./routes/home"));
