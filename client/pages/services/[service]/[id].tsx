@@ -2,6 +2,7 @@ import Spinner from "@/components/Spinner";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 import { AiOutlineMail, AiOutlinePhone } from "react-icons/ai";
+import { MdEmail } from "react-icons/md";
 import { BiUser } from "react-icons/bi";
 import { FaMoneyBillAlt } from "react-icons/fa";
 import { FaWheelchair } from "react-icons/fa";
@@ -63,12 +64,12 @@ const SeriviceIdDetials = () => {
       axios.get<WorkerProps[]>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/${
           service === "packer" ? "packers" : service
-        }/getiddata/${id}`
+        }/getiddata/${id}`,
+        { withCredentials: true }
       ),
     enabled: !!service && !!id,
   });
-
-  console.log(data);
+  console.log(data?.data);
 
   const { isOn, toggleOn } = useToggle();
 
@@ -87,7 +88,8 @@ const SeriviceIdDetials = () => {
             <motion.div
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
-              className="flex flex-col-reverse md:flex-row  gap-x-10  bg-white dark:bg-dark text-dark dark:text-light p-3 md:p-10 rounded-xl items-center shadow-lg">
+              className="flex flex-col-reverse md:flex-row  gap-x-10  bg-white dark:bg-dark text-dark dark:text-light p-3 md:p-10 rounded-xl items-center shadow-lg"
+            >
               {/* Content */}
               <div className="flex flex-col gap-y-8">
                 {/* Name */}
@@ -97,6 +99,10 @@ const SeriviceIdDetials = () => {
                     {data.data[0].name}
                   </h1>
                 </div>
+                <div className="flex items-center text-3xl gap-x-1 ">
+                  <MdEmail className="p-2 bg-pri text-5xl rounded-lg text-light " />
+                  <p>{data.data[0].email}</p>
+                </div>
                 {/*    2x2   */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                   {/* Phone */}
@@ -105,10 +111,6 @@ const SeriviceIdDetials = () => {
                     <p>{data.data[0].phoneno}</p>
                   </div>
                   {/* Email */}
-                  <div className="flex items-center text-3xl gap-x-1 ">
-                    <AiOutlineMail className="p-2 bg-pri text-5xl rounded-lg text-light " />
-                    <p>{data.data[0].email}</p>
-                  </div>
                   {/* Price */}
                   <div className="flex items-center text-3xl gap-x-1 ">
                     <FaMoneyBillAlt className="p-2 bg-pri text-5xl rounded-lg text-light " />

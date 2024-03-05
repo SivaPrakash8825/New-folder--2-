@@ -185,7 +185,7 @@ router.get("/me", async (req, res) => {
           arole1 = "Plumberdata";
           break;
       }
-
+      // console.log(decodeData);
       // if (arole1 != "users") {
       // } else {
       //   console.log(arole1);

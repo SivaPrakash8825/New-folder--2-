@@ -38,7 +38,7 @@ app.use("/api/others", require("./routes/others.routes"));
 app.use("/api/review", require("./routes/review.routes"));
 
 //for booking
-app.use("/api/booking", require("./routes/booking.routes"));
+app.use("/api/book", require("./routes/booking.routes"));
 
 app.listen(port, () => {
   console.log(`Server Runs on Port ${port}`);

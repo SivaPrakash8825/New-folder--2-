@@ -38,7 +38,7 @@ const Header = () => {
 
       return setUser(res.data.userdata);
     },
-    retry: false,
+    retry: 1,
   });
 
   console.log("data : ", data);
