@@ -21,7 +21,8 @@ const ServiceDetails = () => {
       axios.get<WorkerProps[]>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/${
           service === "packer" ? "packers" : service
-        }/getbycity/${city}`
+        }/getbycity/${city}`,
+        { withCredentials: true }
       ),
     enabled: !!service && !!city,
   });
@@ -30,11 +31,11 @@ const ServiceDetails = () => {
     <main className="bg-gray-200 dark:bg-gray-800 p-3 md:-10 flex flex-col  h-full flex-1 items-center pt-20">
       {<SelectCity />}
 
-      {data ? (
+      {data && data?.data.length > 0 ? (
         <>
           <Title>{service! + "s Near By You!!"}</Title>
           <div className=" mt-10 grid grid-cols-1 gap-4 md:gap-10 md:grid-cols-3">
-            {data?.data.map((d, i) => (
+            {data.data.map((d, i) => (
               <ServiceDetailsCard key={i} data={d} />
             ))}
 

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cuid = require("cuid");
-const bcryptjs = require("bcryptjs");
+
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 
@@ -18,7 +18,7 @@ router.post("/painterdata", (req, res) => {
 
   try {
     db.query(
-      "insert into Paintersdata(id,user_id,price,age,experience) values(?,?,?,?,?)",
+      "insert into workers(id,user_id,price,age,experience) values(?,?,?,?,?)",
       [uqId, user_id, price, age, experience],
       (err, rows) => {
         if (err) console.log(err);
@@ -42,7 +42,7 @@ router.post("/updateprice", (req, res) => {
 
   try {
     db.query(
-      "update Paintersdata set price=?,experience=?,age=? where user_id=?",
+      "update workers set price=?,experience=?,age=? where user_id=?",
       [price, experience, age, id],
       (err, rows) => {
         if (err) console.log(err);
@@ -57,32 +57,48 @@ router.post("/updateprice", (req, res) => {
     });
   }
 });
-router.get("/getbycity/:city", (req, res) => {
+router.get("/getbycity/:city", async (req, res) => {
   const { city } = req.params;
   console.log(city);
-  db.query("select * from paintersdata where city=?", [city], (err, rows) => {
-    if (err) {
-      return res.send({
-        msg: "no data",
-      });
-      console.log(err);
+  try {
+    const cookiee = req.cookies.jai;
+    if (cookiee) {
+      const decode = await jwt.verify(cookiee, process.env.jwtSecretCode);
+      db.query(
+        "select a.id,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.city=? and a.id!=?;",
+        [city, decode.userdata.id],
+        (err, rows) => {
+          if (err) {
+            console.log(err);
+            return res.send(err);
+          } else {
+            return res.send(rows);
+          }
+        }
+      );
     } else {
-      return res.send(rows);
+      console.log("not exists");
     }
-  });
+  } catch (e) {
+    console.log(e);
+  }
 });
 
-router.get("/getiddata/:id", (req, res) => {
-  const { id } = req.params;
-  console.log(id);
-  db.query(
-    "select l.id,l.email,l.phoneno,l.name,l.city,l.regDate,p.isVerified,p.id as pid,p.price,p.age,p.experience from users l left join Paintersdata p on l.id=p.user_id and p.id = ?",
-    [id],
-    (err, rows) => {
-      if (err) console.log(err);
-      res.send({ data: rows });
-    }
-  );
+// ,l.regDate
+router.get("/getiddata/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    db.query(
+      "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.id=?",
+      [id],
+      (err, rows) => {
+        if (err) console.log(err);
+        res.send(rows);
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
 });
 
 module.exports = router;

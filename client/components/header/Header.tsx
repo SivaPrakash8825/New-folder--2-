@@ -33,7 +33,6 @@ const Header = () => {
     onSuccess: (res) => {
       setUser(res.data.userdata);
     },
-    retry: 1,
   });
 
   // const isSuccess = false
