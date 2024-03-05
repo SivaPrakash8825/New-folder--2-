@@ -41,6 +41,8 @@ const signin = () => {
   };
 
   const mutateFunc = async (data: Data) => {
+    console.log("mutateFunc : ", data);
+
     return await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/login`,
       data,

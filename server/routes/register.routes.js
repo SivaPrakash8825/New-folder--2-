@@ -105,9 +105,11 @@ router.post("/login", (req, res) => {
             secure: true,
           };
 
-          res.cookie("jai", token, cookieExpire);
+          res.cookie("servicifyCookie", token, cookieExpire);
 
           // console.log(req.cookies);
+          console.log("done", result[0]);
+
           res.send({
             status: "noerror",
             msg: "Login Successful :)",
@@ -155,7 +157,7 @@ router.post("/updateLogin", async (req, res) => {
 router.get("/me", async (req, res) => {
   // res.send("work");
   try {
-    const cookiee = req.cookies.jai;
+    const cookiee = req.cookies.servicifyCookie;
 
     if (cookiee) {
       const decodeData = await jwt.verify(cookiee, process.env.jwtSecretCode);
@@ -207,7 +209,7 @@ router.get("/me", async (req, res) => {
 
 router.delete("/logout", (req, res) => {
   try {
-    res.clearCookie("jai", {
+    res.clearCookie("servicifyCookie", {
       expires: new Date(Date.now()),
       httpOnly: true,
       sameSite: "none",

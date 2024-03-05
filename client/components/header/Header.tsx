@@ -22,20 +22,46 @@ const Header = () => {
   );
 
   const { data, isError, isSuccess } = useQuery({
-    queryKey: ["users"],
-    queryFn: () =>
-      axios.get<{ userdata: UserProps }>(
+    queryKey: ["users", user],
+    queryFn: async () => {
+      console.log("in");
+
+      return await axios.get<{ userdata: UserProps }>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/me`,
         {
           withCredentials: true,
         }
-      ),
-    onSuccess: (res) => {
-      setUser(res.data.userdata);
+      );
     },
-    retry: 1,
+    onSuccess: (res) => {
+      console.log("onSuccess", res);
+
+      return setUser(res.data.userdata);
+    },
+    retry: false,
   });
 
+  console.log("data : ", data);
+
+  const fetchData = async () => {
+    try {
+      const { data } = await axios.get<{ userdata: UserProps }>(
+        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/me`,
+        {
+          withCredentials: true,
+        }
+      );
+
+      console.log("data : ", data);
+      setUser(data.userdata);
+    } catch (error: any) {
+      console.log(error.message);
+    }
+  };
+
+  useEffect(() => {
+    // fetchData();
+  }, []);
   // const isSuccess = false
 
   const { isOn: isDark, toggleOn: toggleDark } = useToggle();
@@ -45,7 +71,7 @@ const Header = () => {
     if (isDark) document.documentElement.classList.add("dark");
     else document.documentElement.classList.remove("dark");
   }, [isDark]);
-
+  // return "";
   return (
     <header className="top-0 left-0 z-50 flex items-center justify-between w-full px-3 py-2 bg-light shadow-md md:px-8 lg:px-16 dark:bg-dark md:py-4 shadow-black/30 ">
       <div>
@@ -60,14 +86,16 @@ const Header = () => {
       <div
         className={`${
           isNav ? "left-0" : "left-full"
-        } flex flex-col lg:flex-row gap-y-4 items-start z-50 lg:items-center lg:justify-center text-xl font-semibold text-pri gap-x-10 fixed lg:static dark:bg-dark bg-gray-100 lg:bg-transparent  w-full lg:w-auto h-screen lg:h-auto top-0 left-0 p-16 lg:p-0 transition-all `}>
+        } flex flex-col lg:flex-row gap-y-4 items-start z-50 lg:items-center lg:justify-center text-xl font-semibold text-pri gap-x-10 fixed lg:static dark:bg-dark bg-gray-100 lg:bg-transparent  w-full lg:w-auto h-screen lg:h-auto top-0 left-0 p-16 lg:p-0 transition-all `}
+      >
         {/* Close Btn  - Mobile */}
         <button
           onClick={toggleNav}
-          className="text-pri font-semibold text-2xl absolute top-5 right-5 lg:hidden">
+          className="text-pri font-semibold text-2xl absolute top-5 right-5 lg:hidden"
+        >
           <AiOutlineClose />
         </button>
-        {!isSuccess ? (
+        {!user ? (
           <>
             <LinkButton link={"signup"} size={"small"} variant={"primary"}>
               {<h1>Sign Up</h1>}
@@ -83,20 +111,22 @@ const Header = () => {
                 <h1
                   className={`relative before:absolute before:contents-[''] ${
                     pathname == "/requests" ? "before:w-full" : "before:w-0"
-                  }  before:transition-all origin-center before:h-1 before:bg-pri before:top-full before:left-0  rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 p-2`}>
+                  }  before:transition-all origin-center before:h-1 before:bg-pri before:top-full before:left-0  rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 p-2`}
+                >
                   Requests
                 </h1>
               </Link>
             )}
 
             {/* Profile */}
-            <Profile user={user} />
+            <Profile user={user} setUser={setUser} />
           </>
         )}
         {/*    Light/Dark      */}
         <button
           onClick={toggleDark}
-          className=" text-pri hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg ">
+          className=" text-pri hover:bg-gray-200 dark:hover:bg-gray-800 p-2 rounded-lg "
+        >
           {isDark ? <MdOutlineDarkMode className="" /> : <MdOutlineLightMode />}
         </button>
       </div>
@@ -107,7 +137,7 @@ const Header = () => {
         {user && (
           <>
             {" "}
-            <Profile user={user} />{" "}
+            <Profile user={user} setUser={setUser} />{" "}
           </>
         )}
         <button onClick={toggleNav} className=" ">

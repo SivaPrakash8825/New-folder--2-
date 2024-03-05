@@ -4,7 +4,10 @@ const cuid = require("cuid");
 const jwt = require("jsonwebtoken");
 const db = require("../config/db");
 async function getusercookie(err, res, next) {
-  const cookie = await jwt.verify(req.cookies.jai, process.env.SECRET);
+  const cookie = await jwt.verify(
+    req.cookies.servicifyCookie,
+    process.env.SECRET
+  );
 }
 
 router.post("/plumberdata", (req, res) => {
