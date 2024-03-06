@@ -45,7 +45,7 @@ router.post("/updateprice", (req, res) => {
 
   try {
     db.query(
-      "update workers set price=?,experience=?,age=? where user_id=?",
+      "update workers set price=?,experience=?,age=? where userId=?",
       [price, experience, age, id],
       (err, rows) => {
         if (err) console.log(err);
@@ -64,11 +64,11 @@ router.get("/getbycity/:city", async (req, res) => {
   const { city } = req.params;
   console.log(city);
   try {
-    const cookiee = req.cookies.jai;
+    const cookiee = req.cookies.servicifyCookie;
     if (cookiee) {
       const decode = await jwt.verify(cookiee, process.env.jwtSecretCode);
       db.query(
-        "select a.id,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.city=? and a.id!=?;",
+        "select a.id,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.city=? and a.id!=?;",
         [city, decode.userdata.id],
         (err, rows) => {
           if (err) {
@@ -92,7 +92,7 @@ router.get("/getiddata/:id", async (req, res) => {
   try {
     const { id } = req.params;
     db.query(
-      "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.id=?",
+      "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.id=?",
       [id],
       (err, rows) => {
         if (err) console.log(err);

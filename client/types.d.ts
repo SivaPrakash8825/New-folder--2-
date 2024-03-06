@@ -30,10 +30,12 @@ interface WorkerProps {
   role: string;
   phoneno: string;
   id: string;
+  userId: string;
   price: string;
   isVerified: number;
   plan: number;
   experience: number;
+  city: string;
 }
 
 interface RequestProps {

@@ -214,7 +214,7 @@ router.get("/me", async (req, res) => {
       // } else {
       //   console.log(arole1);
       //   db.query(
-      //     `select p.id,p.price,p.age,p.experience,p.isVerified,p.plan,u.id,u.email,u.phoneno,u.name,u.role,u.city,u.regDate from ${arole1} p right join users u on p.user_id = u.id`,
+      //     `select p.id,p.price,p.age,p.experience,p.isVerified,p.plan,u.id,u.email,u.phoneno,u.name,u.role,u.city,u.regDate from ${arole1} p right join users u on p.userId = u.id`,
       //     [decodeData.id],
       //     (err, result) => {
       //       if (err) {

@@ -9,12 +9,16 @@ import { useSearchParams } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import Title from "../titles/Title";
+import useUser from "@/store/useUser";
+import useToast from "@/store/useToast";
 
 interface Prop {
   toggleOn: () => void;
 }
 
 const BookServiceModal = ({ toggleOn }: Prop) => {
+  const { user } = useUser((state) => ({ user: state.user }));
+  const setToast = useToast((state) => state.setToast);
   const {
     register,
     formState: { errors },
@@ -29,7 +33,11 @@ const BookServiceModal = ({ toggleOn }: Prop) => {
   // const queryClient = useQueryClient()
 
   const mutateFunc = async (
-    data: BookServiceProps & { servicemanid: string }
+    data: BookServiceProps & {
+      workerId: string;
+      customerId: string;
+      address: string;
+    }
   ) => {
     return axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/book/service`,
@@ -42,6 +50,10 @@ const BookServiceModal = ({ toggleOn }: Prop) => {
     mutationFn: mutateFunc,
     onSuccess: (val) => {
       console.log(val);
+      setToast({
+        msg: "Booking Successful",
+        variant: "success",
+      });
 
       // queryClient.invalidateQueries({ queryKey: ["announcement"] })
     },
@@ -49,7 +61,12 @@ const BookServiceModal = ({ toggleOn }: Prop) => {
 
   const handleBookService = (e: BookServiceProps) => {
     if (id) {
-      mutate({ ...e, servicemanid: id });
+      mutate({
+        ...e,
+        workerId: id,
+        customerId: user?.id as string,
+        address: user?.city as string,
+      });
       toggleOn();
     }
   };
