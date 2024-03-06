@@ -37,26 +37,26 @@ router.post("/painterdata", (req, res) => {
 });
 
 //!!! Need to check
-router.post("/updateprice", (req, res) => {
-  const { id, experience, price, dob } = req.body;
+router.post("/updateProfile", (req, res) => {
+  const { userId, experience, price, dob, role } = req.body;
   const currentDate = new Date();
   const userDOB = new Date(dob);
   const age = Math.floor((currentDate - userDOB) / (1000 * 60 * 60 * 24 * 365));
 
   try {
     db.query(
-      "update workers set price=?,experience=?,age=? where user_id=?",
-      [price, experience, age, id],
+      "update workers set price=?,experience=?,age=? where userId=? and role=?;",
+      [price, experience, age, userId, role],
       (err, rows) => {
-        if (err) console.log(err);
-        res.send({
-          msg: "updated",
+        if (err) return console.log(err);
+        return res.send({
+          msg: "Profile Updated",
         });
       }
     );
   } catch (error) {
     res.status(400).send({
-      msg: "err",
+      msg: "Error",
     });
   }
 });

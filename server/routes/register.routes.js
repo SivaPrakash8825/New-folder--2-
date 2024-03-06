@@ -7,9 +7,11 @@ const db = require("../config/db");
 
 // console.log(cuid.slug());
 router.post("/register", async (req, res) => {
-  const { email, phoneno, name, role, password, city } = req.body; // Needed data
+  const { email, phoneno, name, role, password, city, price, experience, dob } =
+    req.body; // Needed data
   // console.log(email,phoneno,name,role,password,city ); //check
   const uqId = cuid.slug();
+  const uqId1 = cuid.slug();
   //
 
   try {
@@ -30,16 +32,38 @@ router.post("/register", async (req, res) => {
 
           const hashpass = await bcryptjs.hash(password, 10);
           db.query(
-            ` insert into users(id,email,phoneno,name,role,password,city) values(?,?,?,?,?,?,?)`,
+            `insert into users(id,email,phoneno,name,role,password,city) values(?,?,?,?,?,?,?)`,
             [uqId, email, phoneno, name, role, hashpass, city],
             (err, result) => {
               if (err) console.log(err);
               else {
-                return res.send({
-                  status: "noerror",
-                  msg: "Registration Completed :)",
-                  class: "noerr",
-                });
+                if (role.trim() == "user") {
+                  return res.send({
+                    status: "noerror",
+                    msg: "Registration Completed :)",
+                    class: "noerr",
+                  });
+                } else {
+                  const currentDate = new Date();
+                  const userDOB = new Date(dob);
+                  const age = Math.floor(
+                    (currentDate - userDOB) / (1000 * 60 * 60 * 24 * 365)
+                  );
+                  db.query(
+                    `insert into workers(id,userId,price,age,experience,role,isVerified,plan,city) values(?,?,?,?,?,?,?,?,?)`,
+                    [uqId1, uqId, price, age, experience, role, 0, "no", city],
+                    (err, result) => {
+                      if (err) console.log(err);
+                      else {
+                        return res.send({
+                          status: "noerror",
+                          msg: "Registration Completed :)",
+                          class: "noerr",
+                        });
+                      }
+                    }
+                  );
+                }
               }
             }
           );

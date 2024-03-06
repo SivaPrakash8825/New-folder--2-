@@ -24,7 +24,7 @@ const Header = () => {
   const { data, isError, isSuccess } = useQuery({
     queryKey: ["users", user],
     queryFn: async () => {
-      console.log("in");
+      console.log("/me in");
 
       return await axios.get<{ userdata: UserProps }>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/me`,
@@ -34,14 +34,14 @@ const Header = () => {
       );
     },
     onSuccess: (res) => {
-      console.log("onSuccess", res);
-
+      console.log("onSuccess", res.data.userdata);
+      // console.log("UserData : ", res.data.userdata);
       return setUser(res.data.userdata);
     },
     retry: 1,
   });
 
-  console.log("data : ", data);
+  // console.log("data : ", data);
 
   const fetchData = async () => {
     try {
@@ -52,7 +52,7 @@ const Header = () => {
         }
       );
 
-      console.log("data : ", data);
+      console.log("UserData : ", data.userdata);
       setUser(data.userdata);
     } catch (error: any) {
       console.log(error.message);

@@ -21,6 +21,8 @@ import { useMutation } from "@tanstack/react-query";
 import useToast from "@/store/useToast";
 import { Router } from "next/router";
 import { useRouter } from "next/navigation";
+import { DetailsInputProps, detailsSchema } from "@/schema/details.schema";
+import SignUp3 from "@/components/signup/Signup.3";
 
 const signUp = () => {
   const [role, setRole] = useState<RoleProps>("");
@@ -30,6 +32,7 @@ const signUp = () => {
   const router = useRouter();
   const mutateFunc = async (data: Data) => {
     // const filteredData = omit(data, ["confirmPassword"])
+    console.log(data);
 
     return await axios.post(
       `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/register`,
@@ -74,6 +77,15 @@ const signUp = () => {
     resolver: zodResolver(signUp2Schema),
   });
 
+  const {
+    register: register3,
+    formState: { errors: errors3 },
+    handleSubmit: handleSubmit3,
+    getValues: getValues1,
+  } = useForm<DetailsInputProps>({
+    resolver: zodResolver(detailsSchema),
+  });
+
   const handleBack = () => {
     setStep((e) => e - 1);
   };
@@ -88,7 +100,8 @@ const signUp = () => {
     };
 
   const handleSignUp = async (e: SignUp2InputProps) => {
-    const data = { ...e, ...getValues(), role };
+    const data = { ...e, ...getValues(), ...getValues1(), role };
+    // console.log(getValues1());
 
     console.log(data);
 
@@ -130,7 +143,9 @@ const signUp = () => {
       {step == 2 && (
         <SignUp1
           role={role}
-          handleNext={handleNext}
+          handleNext={
+            role === "user" ? () => setStep((e) => e + 2) : handleNext
+          }
           handleBack={role === "user" ? () => setStep(0) : handleBack}
           handleSubmit={handleSubmit}
           errors={errors}
@@ -141,9 +156,23 @@ const signUp = () => {
 
       {/*      Step - 3   */}
       {step == 3 && (
-        <SignUp2
+        <SignUp3
           role={role}
           handleBack={handleBack}
+          handleNext={handleNext}
+          handleSubmit={handleSubmit3}
+          errors={errors3}
+          register={register3}
+        />
+      )}
+
+      {/*      Step - 4   */}
+      {step == 4 && (
+        <SignUp2
+          role={role}
+          handleBack={
+            role === "user" ? () => setStep((e) => e - 2) : handleBack
+          }
           handleNext={handleNext}
           handleSubmit={handleSubmit2}
           errors={errors2}
@@ -153,9 +182,14 @@ const signUp = () => {
         />
       )}
       {/*      End Step - 3   */}
-      {/*      Step - 4  -- Worker - Payment    */}
-      {step == 4 && (
-        <Plans first handleSubmit={handleSubmit2} handleSignUp={handleSignUp} />
+      {/*      Step - 5  -- Worker - Payment    */}
+      {step == 5 && (
+        <Plans
+          first
+          handleSubmit={handleSubmit2}
+          handleSignUp={handleSignUp}
+          handleBack={handleBack}
+        />
       )}
     </main>
   );

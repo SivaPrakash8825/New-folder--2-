@@ -26,7 +26,7 @@ createUsersTable();
 const createWorkersTable = () => {
   try {
     db.query(
-      "CREATE TABLE  IF NOT EXISTS `workers` (`id` varchar(60) NOT NULL,`userId` varchar(60) DEFAULT NULL,`price` int DEFAULT NULL,`age` int DEFAULT NULL,`experience` int DEFAULT NULL,`role` varchar(45) DEFAULT NULL,`isVerified` int DEFAULT NULL,`plan` varchar(45) DEFAULT NULL,`city` varchar(45) DEFAULT NULL,PRIMARY KEY (`id`));",
+      "CREATE TABLE IF NOT EXISTS `workers` (`id` varchar(60) NOT NULL,`userId` varchar(60) DEFAULT NULL,`price` int DEFAULT NULL,`age` int DEFAULT NULL,`experience` varchar(20) DEFAULT NULL,`role` varchar(45) DEFAULT NULL,`isVerified` int DEFAULT '0',`plan` varchar(45) DEFAULT 'no',`city` varchar(45) DEFAULT NULL,PRIMARY KEY (`id`));",
       (err, result) => {
         if (err) {
           console.log(err.message);
