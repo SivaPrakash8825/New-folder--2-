@@ -40,7 +40,7 @@ const signUp = () => {
     );
   };
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: mutateFunc,
     onSuccess: (res) => {
       setToast({

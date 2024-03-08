@@ -56,7 +56,7 @@ const usersRating = [
 const SeriviceIdDetials = () => {
   const service = useSearchParams().get("service");
   const id = useSearchParams().get("id");
-  console.log(service);
+  // console.log(service);
 
   const { data } = useQuery({
     queryKey: [service],
@@ -67,7 +67,7 @@ const SeriviceIdDetials = () => {
       ),
     enabled: !!service && !!id,
   });
-  console.log(data);
+  // console.log(data);
 
   const { isOn, toggleOn } = useToggle();
 

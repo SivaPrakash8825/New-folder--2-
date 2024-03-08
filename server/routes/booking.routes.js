@@ -30,10 +30,10 @@ router.post("/service", (req, res) => {
     (err, rows) => {
       if (err) {
         console.log(err);
-        return { msg: "Error" };
+        return res.send({ msg: "Error" });
       }
       console.log(rows);
-      return { msg: "Inserted" };
+      return res.send({ msg: "Inserted" });
     }
   );
 });

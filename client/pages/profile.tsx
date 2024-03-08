@@ -53,7 +53,7 @@ const signin = () => {
   const { setToast } = useToast(({ setToast }) => ({ setToast }));
   const user = useUser((state) => state.user);
 
-  const { mutate, isLoading } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: mutateFunc,
     onSuccess: (resp) => {
       console.log(resp.data);

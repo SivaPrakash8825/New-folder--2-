@@ -63,16 +63,17 @@ router.post("/painterdata", (req, res) => {
 
 router.post("/getRequestsByCity", async (req, res) => {
   const { city, role, userId } = req.body;
-  // console.log(city, role, userId);
+  console.log(city, role, userId);
   try {
     db.query(
-      "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.city=? and a.id!=?;",
-      [city, userId],
+      "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.city=? and a.id!=? and b.role=?;",
+      [city, userId, role],
       (err, rows) => {
         if (err) {
           console.log(err);
           return res.send(err);
         } else {
+          console.log(rows);
           return res.send(rows);
         }
       }

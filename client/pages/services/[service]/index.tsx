@@ -18,7 +18,7 @@ const ServiceDetails = () => {
   );
   const user = useUser((state) => state.user);
   const { data } = useQuery({
-    queryKey: [service],
+    queryKey: [city],
     queryFn: () =>
       axios.post<WorkerProps[]>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/workers/getRequestsByCity`,
