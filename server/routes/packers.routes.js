@@ -13,7 +13,7 @@ async function getusercookie(err, res, next) {
 }
 
 router.post("/packerdata", (req, res) => {
-  const { user_id, price, dob, experience } = req.body;
+  const { userId, price, dob, experience } = req.body;
   const uqId = cuid.slug();
   const currentDate = new Date();
   const userDOB = new Date(dob);
@@ -22,7 +22,7 @@ router.post("/packerdata", (req, res) => {
   try {
     db.query(
       "insert into Packersdata values(?,?,?,?,?)",
-      [uqId, user_id, price, age, experience],
+      [uqId, userId, price, age, experience],
       (err, rows) => {
         if (err) console.log(err);
         console.log(rows);
@@ -73,7 +73,7 @@ router.get("/getbycity/:city", (req, res) => {
 router.get("/getiddata/:id", (req, res) => {
   const { id } = req.params;
 
-  db.query("select * from Packersdata where user_id=?", [id], (err, rows) => {
+  db.query("select * from Packersdata where userId=?", [id], (err, rows) => {
     if (err) console.log(err);
     res.send({ data: rows });
   });
