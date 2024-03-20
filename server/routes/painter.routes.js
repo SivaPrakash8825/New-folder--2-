@@ -21,7 +21,7 @@ router.post("/painterdata", (req, res) => {
 
   try {
     db.query(
-      "insert into workers(id,user_id,price,age,experience) values(?,?,?,?,?)",
+      "replace into workers(id,user_id,price,age,experience) values(?,?,?,?,?)",
       [uqId, user_id, price, age, experience],
       (err, rows) => {
         if (err) console.log(err);
@@ -62,14 +62,13 @@ router.post("/updateprice", (req, res) => {
 });
 router.get("/getbycity/:city", async (req, res) => {
   const { city } = req.params;
-  console.log(city);
   try {
-    const cookiee = req.cookies.jai;
+    const cookiee = req.cookies.servicifyCookie;
     if (cookiee) {
       const decode = await jwt.verify(cookiee, process.env.jwtSecretCode);
       db.query(
-        "select a.id,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.city=? and a.id!=?;",
-        [city, decode.userdata.id],
+        "select a.id,a.phoneno,a.name,a.email,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.city=? and a.id!=?",
+        [city == "near" ? decode.userdata.city : city, decode.userdata.id],
         (err, rows) => {
           if (err) {
             console.log(err);

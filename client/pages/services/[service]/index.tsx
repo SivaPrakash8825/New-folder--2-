@@ -16,15 +16,14 @@ const ServiceDetails = () => {
     shallow
   );
   const { data } = useQuery({
-    queryKey: [service],
+    queryKey: [service, city],
     queryFn: () =>
       axios.get<WorkerProps[]>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/${
           service === "packer" ? "packers" : service
-        }/getbycity/${city}`,
+        }/getbycity/${city ? city : "near"}`,
         { withCredentials: true }
       ),
-    enabled: !!service && !!city,
   });
 
   return (

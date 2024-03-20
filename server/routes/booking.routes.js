@@ -23,7 +23,7 @@ router.post("/service", (req, res) => {
   const { name, servicemanid, phoneno, email } = req.body;
   const uqId = cuid.slug();
   db.query(
-    "insert into booked value(?,?,?,?,?)",
+    "insert into bookers value(?,?,?,?,?)",
     [uqId, name, phoneno, servicemanid, email],
 
     (err, rows) => {
@@ -36,7 +36,7 @@ router.post("/service", (req, res) => {
 router.get("/requested/:id", (req, res) => {
   const { id } = req.params;
   console.log(id);
-  db.query("select * from booked where servicemanid=?", [id], (err, row) => {
+  db.query("select * from bookers where servicemanid=?", [id], (err, row) => {
     if (err) console.log(err);
     res.send(row);
   });
@@ -45,9 +45,9 @@ router.get("/requested/:id", (req, res) => {
 //get particular review booker data and serviceman data..
 router.get("/getrate", (req, res) => {
   const { servicemanid } = req.body;
-  console.log(servicemanid);
+
   db.query(
-    "select * from booked where servicemanid=?",
+    "select * from bookeds where servicemanid=?",
     [servicemanid],
     (err, row) => {
       if (err) console.log(err);

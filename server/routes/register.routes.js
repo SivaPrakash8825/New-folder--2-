@@ -57,12 +57,12 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, role } = req.body;
 
   try {
     db.query(
-      "select * from users where email = ?",
-      [email],
+      "select * from users where email = ? and role=?",
+      [email, role],
       async (err, result) => {
         if (err) console.log(err);
         else {
@@ -104,12 +104,7 @@ router.post("/login", (req, res) => {
             path: "/",
             secure: true,
           };
-
           res.cookie("servicifyCookie", token, cookieExpire);
-
-          // console.log(req.cookies);
-          console.log("done", result[0]);
-
           res.send({
             status: "noerror",
             msg: "Login Successful :)",
