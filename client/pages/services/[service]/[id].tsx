@@ -56,20 +56,18 @@ const usersRating = [
 const SeriviceIdDetials = () => {
   const service = useSearchParams().get("service");
   const id = useSearchParams().get("id");
-  console.log(service);
+  // console.log(service);
 
   const { data } = useQuery({
     queryKey: [service],
     queryFn: () =>
       axios.get<WorkerProps[]>(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/${
-          service === "packer" ? "packers" : service
-        }/getiddata/${id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/workers/getiddata/${id}`,
         { withCredentials: true }
       ),
     enabled: !!service && !!id,
   });
-  console.log(data?.data);
+  // console.log(data);
 
   const { isOn, toggleOn } = useToggle();
 

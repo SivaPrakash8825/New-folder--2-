@@ -26,6 +26,7 @@ app.get("/me", (req, res) => {
 //for users
 app.use("/api/auth", require("./routes/register.routes"));
 app.use("/api/users", require("./routes/user.routes"));
+app.use("/api/workers", require("./routes/workers.routes"));
 app.use("/api/painter", require("./routes/painter.routes"));
 app.use("/api/packers", require("./routes/packers.routes"));
 app.use("/api/designer", require("./routes/designer.routes"));

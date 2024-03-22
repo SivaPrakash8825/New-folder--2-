@@ -1,4 +1,3 @@
-import Modal from "@/components/modal/Modal";
 import SelectCity from "@/components/services/SelectCity";
 import ServiceDetailsCard from "@/components/services/ServiceDetailsCard";
 import Title from "@/components/titles/Title";
@@ -10,7 +9,7 @@ import { useSearchParams } from "next/navigation";
 import React from "react";
 import { shallow } from "zustand/shallow";
 
-const ServiceDetails = () => {
+export const ServiceDetails = () => {
   const service = useSearchParams().get("service");
   const { city, setCity } = useCity(
     (state) => ({ city: state.city, setCity: state.setCity }),
@@ -18,17 +17,15 @@ const ServiceDetails = () => {
   );
   const user = useUser((state) => state.user);
   const { data } = useQuery({
-    queryKey: [service, city],
+    queryKey: [service],
     queryFn: () =>
-      axios.get<WorkerProps[]>(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/${
-          service === "packer" ? "packers" : service
-        }/getbycity/${city ? city : "near"}`,
+      axios.post<WorkerProps[]>(
+        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/workers/getByCity/${city}/${user?.id}`,
+        data,
         { withCredentials: true }
       ),
+    enabled: !!service && !!city,
   });
-
-  console.log(data);
 
   return (
     <main className="bg-gray-200 dark:bg-gray-800 p-3 md:-10 flex flex-col  h-full flex-1 items-center pt-20">
@@ -52,5 +49,3 @@ const ServiceDetails = () => {
     </main>
   );
 };
-
-export default ServiceDetails;

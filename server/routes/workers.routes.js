@@ -12,6 +12,31 @@ async function getusercookie(err, res, next) {
   );
 }
 
+//!!! Update Worker Profile
+router.post("/updateProfile", (req, res) => {
+  const { userId, experience, price, dob, role } = req.body;
+  const currentDate = new Date();
+  const userDOB = new Date(dob);
+  const age = Math.floor((currentDate - userDOB) / (1000 * 60 * 60 * 24 * 365));
+
+  try {
+    db.query(
+      "update workers set price=?,experience=?,age=? where userId=? and role=?;",
+      [price, experience, age, userId, role],
+      (err, rows) => {
+        if (err) return console.log(err);
+        return res.send({
+          msg: "Profile Updated",
+        });
+      }
+    );
+  } catch (error) {
+    res.status(400).send({
+      msg: "Error",
+    });
+  }
+});
+
 router.post("/painterdata", (req, res) => {
   const { userId, price, dob, experience } = req.body;
   const uqId = cuid.slug();
@@ -21,8 +46,8 @@ router.post("/painterdata", (req, res) => {
 
   try {
     db.query(
-      "replace into workers(id,user_id,price,age,experience) values(?,?,?,?,?)",
-      [uqId, user_id, price, age, experience],
+      "insert into workers(id,userId,price,age,experience) values(?,?,?,?,?)",
+      [uqId, userId, price, age, experience],
       (err, rows) => {
         if (err) console.log(err);
         console.log(rows);
@@ -36,51 +61,23 @@ router.post("/painterdata", (req, res) => {
   res.send("added");
 });
 
-//!!! Need to check
-router.post("/updateprice", (req, res) => {
-  const { id, experience, price, dob } = req.body;
-  const currentDate = new Date();
-  const userDOB = new Date(dob);
-  const age = Math.floor((currentDate - userDOB) / (1000 * 60 * 60 * 24 * 365));
-
+router.post("/getRequestsByCity", async (req, res) => {
+  const { city, role, userId } = req.body;
+  console.log(city, role, userId);
   try {
     db.query(
-      "update workers set price=?,experience=?,age=? where userId=?",
-      [price, experience, age, id],
+      "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.city=? and a.id!=? and b.role=?;",
+      [city, userId, role],
       (err, rows) => {
-        if (err) console.log(err);
-        res.send({
-          msg: "updated",
-        });
+        if (err) {
+          console.log(err);
+          return res.send(err);
+        } else {
+          console.log(rows);
+          return res.send(rows);
+        }
       }
     );
-  } catch (error) {
-    res.status(400).send({
-      msg: "err",
-    });
-  }
-});
-router.get("/getbycity/:city", async (req, res) => {
-  const { city } = req.params;
-  try {
-    const cookiee = req.cookies.servicifyCookie;
-    if (cookiee) {
-      const decode = await jwt.verify(cookiee, process.env.jwtSecretCode);
-      db.query(
-        "select a.id,a.phoneno,a.name,a.email,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.city=? and a.id!=?",
-        [city == "near" ? decode.userdata.city : city, decode.userdata.id],
-        (err, rows) => {
-          if (err) {
-            console.log(err);
-            return res.send(err);
-          } else {
-            return res.send(rows);
-          }
-        }
-      );
-    } else {
-      console.log("not exists");
-    }
   } catch (e) {
     console.log(e);
   }

@@ -16,15 +16,15 @@ const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const { setUser, user } = useUser(
-    (state) => ({ setUser: state.setUser, user: state.user }),
-    shallow
-  );
+  const { setUser, user } = useUser((state) => ({
+    setUser: state.setUser,
+    user: state.user,
+  }));
 
   const { data, isError, isSuccess } = useQuery({
     queryKey: ["users", user],
     queryFn: async () => {
-      console.log("in");
+      console.log("/me in");
 
       return await axios.get<{ userdata: UserProps }>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/me`,
@@ -33,15 +33,19 @@ const Header = () => {
         }
       );
     },
-    onSuccess: (res) => {
-      console.log("onSuccess", res);
 
-      return setUser(res.data.userdata);
-    },
     retry: 1,
   });
 
-  console.log("data : ", data);
+  useEffect(() => {
+    if (data) {
+      // console.log("onSuccess", data.data.userdata);
+      // console.log("UserData : ", res.data.userdata);
+      return setUser(data.data.userdata);
+    }
+  }, [data]);
+
+  // console.log("data : ", data);
 
   const fetchData = async () => {
     try {
@@ -52,7 +56,7 @@ const Header = () => {
         }
       );
 
-      console.log("data : ", data);
+      console.log("UserData : ", data.userdata);
       setUser(data.userdata);
     } catch (error: any) {
       console.log(error.message);
@@ -73,7 +77,7 @@ const Header = () => {
   }, [isDark]);
   // return "";
   return (
-    <header className="top-0 left-0 z-50 flex items-center justify-between w-full px-3 py-2 bg-light shadow-md md:px-8 lg:px-16 dark:bg-dark md:py-4 shadow-black/30 ">
+    <header className="top-0 left-0  z-50 flex items-center justify-between w-full px-3 py-2 bg-light shadow-md md:px-8 lg:px-16 dark:bg-dark md:py-4 shadow-black/30 ">
       <div>
         {/*   Logo   */}
         <Link href={"/"}>

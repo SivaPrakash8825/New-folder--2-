@@ -44,7 +44,6 @@ const iconImages = {
 
 const ServiceDetailsCard = ({ data }: { data: WorkerProps }) => {
   const service = useSearchParams().get("service");
-  console.log(data);
 
   if (
     service === "electrician" ||
@@ -87,7 +86,7 @@ const ServiceDetailsCard = ({ data }: { data: WorkerProps }) => {
           {/* Price */}
           <div className="flex items-center justify-center gap-x-2 ">
             <FaMoneyBillAlt />
-            <p>{data.price || "300" + "/hr"}</p>
+            <p>{(data.price || "300") + "/hr"}</p>
           </div>
           {/*   Btn   */}
           <LinkButton

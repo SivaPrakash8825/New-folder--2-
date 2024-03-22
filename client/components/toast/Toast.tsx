@@ -1,8 +1,8 @@
-import useToast from "@/store/useToast"
-import { cva, VariantProps } from "class-variance-authority"
-import React, { ReactNode, useEffect, useState } from "react"
-import { GrClose } from "react-icons/gr"
-import { shallow } from "zustand/shallow"
+import useToast from "@/store/useToast";
+import { cva, VariantProps } from "class-variance-authority";
+import React, { ReactNode, useEffect, useState } from "react";
+import { GrClose } from "react-icons/gr";
+import { shallow } from "zustand/shallow";
 
 // type ToastType = VariantProps<typeof toastClass> & {
 //     children: ReactNode
@@ -11,48 +11,48 @@ import { shallow } from "zustand/shallow"
 // }
 
 const toastClass = cva(
-    [
-        "w-10/12 pt-4 bottom-3 sm:w-6/12 md:w-4/12 lg:w-3/12 px-2 md:px-4 py-2 md:py-3 text-base md:text-lg   shadow-md shadow-black/60 absolute left-1/2 -translate-x-1/2 text-center rounded-md text-white transition-all",
-    ],
-    {
-        variants: {
-            variant: {
-                success: ["bg-green-700/90 "],
-                error: ["bg-red-700/90 "],
-            },
+  [
+    "w-10/12 pt-4 fixed bottom-3 sm:w-6/12 md:w-4/12 lg:w-3/12 px-2 md:px-4 py-2 md:py-3 text-base md:text-lg   shadow-md shadow-black/60 left-1/2 -translate-x-1/2 text-center rounded-md text-white transition-all",
+  ],
+  {
+    variants: {
+      variant: {
+        success: ["bg-green-700/90 "],
+        error: ["bg-red-700/90 "],
+      },
 
-            showToast: {
-                true: ["scale-100", "delay-[10ms]"],
-                false: ["scale-0", "delay-[10ms]"],
-            },
-        },
+      showToast: {
+        true: ["scale-100", "delay-[10ms]"],
+        false: ["scale-0", "delay-[10ms]"],
+      },
+    },
 
-        defaultVariants: {
-            showToast: false,
-        },
-    }
-)
+    defaultVariants: {
+      showToast: false,
+    },
+  }
+);
 
 const Toast = () => {
-    const {
-        toast: { msg, variant },
-        showToast,
-    } = useToast(
-        (state) => ({
-            toast: state.toast,
-            showToast: state.showToast,
-        }),
-        shallow
-    )
+  const {
+    toast: { msg, variant },
+    showToast,
+  } = useToast(
+    (state) => ({
+      toast: state.toast,
+      showToast: state.showToast,
+    }),
+    shallow
+  );
 
-    return (
-        <>
-            <div className={toastClass({ variant, showToast })}>
-                <h1>{msg}</h1>
-            </div>
-        </>
-    )
-}
+  return (
+    <>
+      <div className={toastClass({ variant, showToast })}>
+        <h1 className="font-semibold">{msg}</h1>
+      </div>
+    </>
+  );
+};
 
 // `w-10/12 pt-4 sm:w-6/12 md:w-4/12 lg:w-3/12 px-2 md:px-4 py-2 md:py-3 text-base md:text-lg   shadow-md shadow-black/60 absolute  left-1/2 -translate-x-1/2 text-center rounded-md text-white transition-all ${
 //     toast?.variant === "error"
@@ -111,4 +111,4 @@ const Toast = () => {
 //     )
 // }
 
-export default Toast
+export default Toast;
