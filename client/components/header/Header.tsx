@@ -26,22 +26,26 @@ const Header = () => {
     queryFn: async () => {
       console.log("/me in");
 
-      return await axios.get<{ userdata: UserProps }>(
+      return axios.get<{ userdata: UserProps }>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/auth/me`,
         {
           withCredentials: true,
         }
       );
     },
-
-    retry: 1,
   });
 
   useEffect(() => {
     if (data) {
-      // console.log("onSuccess", data.data.userdata);
+      if (typeof data.data == "string") {
+        setUser(null);
+        return router.replace("/signin");
+      }
+      console.log("onSuccess", data.data);
       // console.log("UserData : ", res.data.userdata);
-      return setUser(data.data.userdata);
+      setUser(data.data.userdata);
+    } else {
+      console.log(data);
     }
   }, [data]);
 

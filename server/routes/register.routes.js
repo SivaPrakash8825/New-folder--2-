@@ -182,9 +182,9 @@ router.get("/me", async (req, res) => {
   // res.send("work");
   try {
     const cookiee = req.cookies.servicifyCookie;
-
+    console.log("cookie", cookiee);
     if (cookiee) {
-      const decodeData = await jwt.verify(cookiee, process.env.jwtSecretCode);
+      const decodeData = jwt.verify(cookiee, process.env.jwtSecretCode);
 
       var arole1 = "";
 
@@ -224,7 +224,10 @@ router.get("/me", async (req, res) => {
       //     }
       //   );
       // }
+      console.log(decodeData);
       res.send(decodeData);
+    } else {
+      res.send("cookie not found");
     }
   } catch (error) {
     console.log(error);
