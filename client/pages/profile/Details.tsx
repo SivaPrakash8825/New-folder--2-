@@ -6,6 +6,7 @@ import AWS from "aws-sdk";
 import Profile from "@/components/header/Profile";
 import { PutObjectOutput } from "aws-sdk/clients/s3";
 import { PromiseResult } from "aws-sdk/lib/request";
+import ProfileCard from "@/components/profilecard/ProfileCard";
 type Props = {};
 
 const Details = (props: Props) => {
@@ -70,9 +71,9 @@ const Details = (props: Props) => {
     }
   };
   return (
-    <div className=" w-full h-screen ">
+    <div className=" w-full h-screen flex flex-col ">
       {/* header */}
-      <div className=" w-full h-80 relative bg-slate-400">
+      <div className=" w-full h-64 relative bg-slate-400">
         <div className="absolute w-56 h-56  z-20  -bottom-11  left-10">
           <div className=" w-full h-full relative rounded-full overflow-hidden bg-white z-10  border group border-black">
             <input
@@ -95,6 +96,9 @@ const Details = (props: Props) => {
           </label>
         </div>
       </div>
+      {/* card */}
+
+      <ProfileCard />
       {/* details */}
       <div className="w-full flex ">
         <button onClick={uploadFile}> upload</button>
