@@ -27,15 +27,7 @@ const Details = (props: Props) => {
       reader.readAsDataURL(file);
     }
   };
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFiles = event.target.files;
 
-    const selectedImages: FileList[] = [];
-    console.log(selectedFiles);
-
-    if (selectedFiles) {
-    }
-  };
   return (
     <div className=" w-full h-screen flex flex-col ">
       {/* header */}
