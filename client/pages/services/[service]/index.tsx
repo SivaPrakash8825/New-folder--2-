@@ -9,8 +9,10 @@ import axios from "axios";
 import { useSearchParams } from "next/navigation";
 import React from "react";
 import { shallow } from "zustand/shallow";
+import { useRouter } from "next/navigation";
 
 const ServiceDetails = () => {
+  const router = useRouter();
   const service = useSearchParams().get("service");
   const { city, setCity } = useCity(
     (state) => ({ city: state.city, setCity: state.setCity }),
@@ -19,16 +21,23 @@ const ServiceDetails = () => {
   const user = useUser((state) => state.user);
   const { data } = useQuery({
     queryKey: [service, city],
-    queryFn: () =>
-      axios.get<WorkerProps[]>(
+    queryFn: async () => {
+      return await axios.get<WorkerProps[]>(
         `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/${
           service === "packer" ? "packers" : service
         }/getbycity/${city ? city : "near"}`,
         { withCredentials: true }
-      ),
+      );
+    },
+    enabled: !!user?.role,
   });
 
-  console.log(data);
+  useQuery({
+    queryKey: [],
+    queryFn: async () => {
+      router.push("/signin");
+    },
+  });
 
   return (
     <main className="bg-gray-200 dark:bg-gray-800 p-3 md:-10 flex flex-col  h-full flex-1 items-center pt-20">

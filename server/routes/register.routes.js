@@ -82,7 +82,6 @@ router.post("/register", async (req, res) => {
 
 router.post("/login", (req, res) => {
   const { email, password, role } = req.body;
-  const { email, password, role } = req.body;
 
   try {
     db.query(

@@ -67,4 +67,17 @@ router.get("/getUserDetails/:id", (req, res) => {
   }
 });
 
+router.patch("/updateprofile", (req, res) => {
+  const { data } = req.body;
+  db.query(
+    "update users set image=? where id=?",
+    [data.image, data.data.userId],
+    (err, result) => {
+      if (err) {
+        res.status(400).send(err.message);
+      }
+      res.status(200).send(result);
+    }
+  );
+});
 module.exports = router;

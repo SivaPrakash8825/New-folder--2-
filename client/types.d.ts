@@ -16,6 +16,7 @@ interface UserProps {
   phoneno: string;
   city: string;
   password: string;
+  image: string;
 }
 
 interface ModalProps {

@@ -22,6 +22,7 @@ import BookServiceModal from "@/components/modal/BookServiceModal";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { motion } from "framer-motion";
+import useUser from "@/store/useUser";
 
 const imagesDetails = {
   electrician: ELECTRICIAN_IMG,
@@ -67,7 +68,6 @@ const SeriviceIdDetials = () => {
       ),
     enabled: !!service && !!id,
   });
-  // console.log(data);
 
   const { isOn, toggleOn } = useToggle();
 
@@ -86,8 +86,7 @@ const SeriviceIdDetials = () => {
             <motion.div
               initial={{ scale: 0 }}
               whileInView={{ scale: 1 }}
-              className="flex flex-col-reverse md:flex-row  gap-x-10  bg-white dark:bg-dark text-dark dark:text-light p-3 md:p-10 rounded-xl items-center shadow-lg"
-            >
+              className="flex flex-col-reverse md:flex-row  gap-x-10  bg-white dark:bg-dark text-dark dark:text-light p-3 md:p-10 rounded-xl items-center shadow-lg">
               {/* Content */}
               <div className="flex flex-col gap-y-8">
                 {/* Name */}

@@ -8,6 +8,8 @@ import useUser from "@/store/useUser";
 
 export default function Home() {
   const { user } = useUser();
+  console.log("user : " + user);
+
   return (
     <>
       <Head>
@@ -17,7 +19,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className={"bg-light dark:bg-dark text-pri"}>
-        {user?.role == "user" ? (
+        {user?.role == "user" || user?.role == null ? (
           <div>
             {/*     Home Hero Slider     */}
             <Slider />

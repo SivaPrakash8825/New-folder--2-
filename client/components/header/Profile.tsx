@@ -48,20 +48,20 @@ const Profile = ({
       });
     },
   });
+  console.log(user);
 
   return (
     <div className="relative z-50 group ">
       <div className="w-12 h-12 border-2 rounded-full cursor-pointer border-pri">
         {/* img */}
         <img
-          src={getAvatar(user?.role as RoleProps)}
+          src={user?.image ? user.image : getAvatar(user?.role as RoleProps)}
           alt="profile_pic"
           className="w-full h-full rounded-full"
         />
         {/*   Dropdown   */}
         <div
-          className={` shadow-md shadow-black/50 absolute flex left-0 flex-col p-3 px-6 translate-y-5 bg-white dark:bg-gray-900 -translate-x-[25%] -z-10 top-full origin-top text-gray-400 rounded-md gap-y-2 transition-all group-hover:scale-100 scale-0 `}
-        >
+          className={` shadow-md shadow-black/50 absolute flex left-0 flex-col p-3 px-6 translate-y-5 bg-white dark:bg-gray-900 -translate-x-[25%] -z-10 top-full origin-top text-gray-400 rounded-md gap-y-2 transition-all group-hover:scale-100 scale-0 `}>
           {/*    Name - Role  */}
           <h1 className="text-pri">{user?.name}</h1>
           <hr className="border border-pri" />
@@ -70,8 +70,7 @@ const Profile = ({
           </Link>
           <h1
             onClick={() => logout()}
-            className="transition-all hover:text-pri"
-          >
+            className="transition-all hover:text-pri">
             Logout
           </h1>
         </div>

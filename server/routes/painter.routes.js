@@ -67,7 +67,7 @@ router.get("/getbycity/:city", async (req, res) => {
     if (cookiee) {
       const decode = await jwt.verify(cookiee, process.env.jwtSecretCode);
       db.query(
-        "select a.id,a.phoneno,a.name,a.email,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.user_id where a.city=? and a.id!=?",
+        "select a.id,a.phoneno,a.name,a.email,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.city=? and a.id!=?",
         [city == "near" ? decode.userdata.city : city, decode.userdata.id],
         (err, rows) => {
           if (err) {
