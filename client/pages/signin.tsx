@@ -64,7 +64,7 @@ const signin = () => {
         msg: resp.data.msg,
         variant: "success",
       });
-
+      
       setUser(resp.data.data);
       queryClient.invalidateQueries({ queryKey: ["users"] });
       if (resp.data.data.role === "user") router.push("/");
