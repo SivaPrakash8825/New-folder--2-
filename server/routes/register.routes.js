@@ -132,7 +132,7 @@ router.post("/login", (req, res) => {
           res.cookie("servicifyCookie", token, cookieExpire);
 
           // console.log(req.cookies);
-          console.log("done", result[0]);
+          // console.log("done", result[0]);
 
           res.send({
             status: "noerror",
@@ -159,7 +159,7 @@ router.post("/updateLogin", async (req, res) => {
       (err, result) => {
         if (err) console.log(err);
         else {
-          console.log(result);
+          // console.log(result);
           return res.send({
             status: "noerror",
             msg: "User Details Updated :)",
@@ -182,7 +182,7 @@ router.get("/me", async (req, res) => {
   // res.send("work");
   try {
     const cookiee = req.cookies.servicifyCookie;
-    console.log("cookie", cookiee);
+    // console.log("cookie", cookiee);
     if (cookiee) {
       const decodeData = jwt.verify(cookiee, process.env.jwtSecretCode);
 
@@ -224,7 +224,7 @@ router.get("/me", async (req, res) => {
       //     }
       //   );
       // }
-      console.log(decodeData);
+      // console.log(decodeData);
       res.send(decodeData);
     } else {
       res.send("cookie not found");

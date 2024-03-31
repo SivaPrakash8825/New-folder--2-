@@ -45,7 +45,7 @@ createWorkersTable();
 const createBookersTable = () => {
   try {
     db.query(
-      "CREATE TABLE IF NOT EXISTS `bookers` (`id` varchar(60) NOT NULL,`customerId` varchar(60) DEFAULT NULL,`workerId` varchar(60) DEFAULT NULL,`name` varchar(45) DEFAULT NULL,`phoneno` varchar(45) DEFAULT NULL,`email` varchar(45) DEFAULT NULL,`address` varchar(70) DEFAULT NULL,PRIMARY KEY (`id`));",
+      "CREATE TABLE IF NOT EXISTS `bookers` (`id` varchar(60) NOT NULL,`customerId` varchar(60) DEFAULT NULL,`workerId` varchar(60) DEFAULT NULL,`name` varchar(45) DEFAULT NULL,`phoneno` varchar(45) DEFAULT NULL,`email` varchar(45) DEFAULT NULL,`address` varchar(70) DEFAULT NULL,`status` varchar(45) DEFAULT 'pending',PRIMARY KEY (`id`));",
       (err, result) => {
         if (err) {
           console.log(err.message);

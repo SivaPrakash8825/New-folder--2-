@@ -24,8 +24,8 @@ router.post("/packerdata", (req, res) => {
       "insert into Packersdata values(?,?,?,?,?)",
       [uqId, userId, price, age, experience],
       (err, rows) => {
-        if (err) console.log(err);
-        console.log(rows);
+        if (err) return console.log(err);
+        // console.log(rows);
       }
     );
   } catch (error) {
@@ -43,7 +43,7 @@ router.post("/updateprice", (req, res) => {
       "update Packersdata set price=? where upId=?",
       [price, id],
       (err, rows) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         res.send({
           msg: "updated",
         });
@@ -74,7 +74,7 @@ router.get("/getiddata/:id", (req, res) => {
   const { id } = req.params;
 
   db.query("select * from Packersdata where userId=?", [id], (err, rows) => {
-    if (err) console.log(err);
+    if (err) return console.log(err);
     res.send({ data: rows });
   });
 });

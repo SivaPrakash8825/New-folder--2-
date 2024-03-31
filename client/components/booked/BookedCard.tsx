@@ -5,15 +5,11 @@ import { BiUser } from "react-icons/bi";
 import axios from "axios";
 import useToast from "@/store/useToast";
 import { useQueryClient } from "@tanstack/react-query";
-import Modal from "../modal/Modal";
-import useToggle from "@/hooks/useToggle";
-import Title from "../titles/Title";
 
-const RequestCard = ({ data }: { data: RequestProps }) => {
+const BookedCard = ({ data }: { data: RequestProps }) => {
   // const [status, setStatus] = useState<RequestStatus>(data.status);
   const { setToast } = useToast();
   const queryClient = useQueryClient();
-  const { isOn, toggleOn } = useToggle();
 
   const statusWithOptions: {
     [key in RequestStatus]: { option: string; status: RequestStatus }[];
@@ -32,31 +28,11 @@ const RequestCard = ({ data }: { data: RequestProps }) => {
     cancelled: [],
   };
 
-  const setDateandTime = async () => {
-    try {
-      // console.log(data.id);
-      // setStatus(status);
-      // console.log("setData");
-
-      return true;
-    } catch (err) {
-      console.log(err.message);
-    }
-  };
-
   const updateStatus = async (status: RequestStatus) => {
     try {
       console.log(data.id, status);
-      if (status == "accepted") {
-        const result = await setDateandTime();
-        if (!result) {
-          return;
-        }
-      }
-      console.log("here");
-
       // setStatus(status);
-      return;
+
       const { data: resData } = await axios.patch(
         `http://localhost:9000/api/book/status`,
         {
@@ -76,20 +52,6 @@ const RequestCard = ({ data }: { data: RequestProps }) => {
       console.log(err.message);
     }
   };
-
-  // useEffect(() => {
-  //   setOptions((prev) => {
-  //     if (status == "pending") {
-  //       return ["Accept", "Reject"];
-  //     } else if (status == "accepted") {
-  //       return ["AtWork", "Completed"];
-  //     } else if (status == "atwork") {
-  //       return ["Completed"];
-  //     } else {
-  //       return [];
-  //     }
-  //   });
-  // }, [status]);
 
   return (
     <div className="flex rounded-xl shadow-xl bg-light dark:bg-dark items-center  overflow-hidden group border-2 border-pri">
@@ -144,37 +106,9 @@ const RequestCard = ({ data }: { data: RequestProps }) => {
             />
           ))}
         </div>
-
-        {data.status == "completed" && (
-          <div className=" bg-green-500 text-white p-2 rounded w-full text-center font-semibold">
-            Completed
-          </div>
-        )}
-        {data.status == "rejected" && (
-          <div className=" bg-red-500 text-white p-2 rounded w-full text-center font-semibold">
-            Rejected
-          </div>
-        )}
-        <Modal isOn={isOn} toggleOn={toggleOn}>
-          <div>
-            <Title>Set a Date & Time</Title>
-            <input
-              type="datetime-local"
-              className="mt-2 w-full p-2 overflow-y-auto text-white transition-all border-b-2 rounded-t-sm peer placeholder:text-transparent outline-0 bg-pri/70 border-pri/70 placeholder-shown:bg-transparent focus:bg-pri/70 font-sm "
-            />
-
-            <ClickButton
-              onClick={() => updateStatus("accepted")}
-              size={"small"}
-              className="mt-4 mx-auto"
-            >
-              <h1>Book !!</h1>
-            </ClickButton>
-          </div>
-        </Modal>
       </div>
     </div>
   );
 };
 
-export default RequestCard;
+export default BookedCard;

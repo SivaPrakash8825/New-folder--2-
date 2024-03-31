@@ -12,7 +12,7 @@ router.get("/isVerified/:city", (req, res) => {
       "select l.id,l.email,l.phoneno,l.name,l.city,l.regDate,p.id as pid,p.price,p.age,p.experience from users l inner join Paintersdata p on l.id=p.userId  and l.city = ? and p.isVerified = 1",
       [city],
       (err, result) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         return res.send({ data: result });
       }
     );
@@ -30,7 +30,7 @@ router.get("/notVerifiedUsers", (req, res) => {
     db.query(
       "select  l.id,l.email,l.phoneno,l.name,l.city,l.regDate,p.id as pid,p.price,p.age,p.experience,p.plan from users l inner join Paintersdata p on l.id=p.userId and p.isVerified = 0",
       (err, result) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         else {
           return res.send({ data: result });
         }
@@ -52,7 +52,7 @@ router.put("/upateVerified/:id", (req, res) => {
       "update Paintersdata set isVerified = 1 where userId = ?",
       [id],
       (err, result) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         else {
           return res.send({ msg: "Updated" });
         }
@@ -71,7 +71,7 @@ router.put("/updatePlan/:id", (req, res) => {
       "update Paintersdata set plan = ? where userId = ?",
       [plan, id],
       (err, result) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         else {
           return res.send({ msg: "Updated" });
         }
@@ -86,7 +86,7 @@ router.get("/regDate/:id", (req, res) => {
   try {
     const id = req.params.id;
     db.query("select regdate from users where id = ?", [id], (err, result) => {
-      if (err) console.log(err);
+      if (err) return console.log(err);
       else {
         return res.send({ data: result });
       }

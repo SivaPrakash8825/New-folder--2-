@@ -45,4 +45,13 @@ interface RequestProps {
   phoneno: string;
   id: string;
   servicemanid: string;
+  status: RequestStatus;
 }
+
+type RequestStatus =
+  | "pending"
+  | "accepted"
+  | "rejected"
+  | "completed"
+  | "cancelled"
+  | "atwork";

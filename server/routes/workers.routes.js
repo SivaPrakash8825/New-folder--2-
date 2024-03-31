@@ -49,8 +49,8 @@ router.post("/painterdata", (req, res) => {
       "insert into workers(id,userId,price,age,experience) values(?,?,?,?,?)",
       [uqId, userId, price, age, experience],
       (err, rows) => {
-        if (err) console.log(err);
-        console.log(rows);
+        if (err) return console.log(err);
+        // console.log(rows);
       }
     );
   } catch (error) {
@@ -63,7 +63,7 @@ router.post("/painterdata", (req, res) => {
 
 router.post("/getRequestsByCity", async (req, res) => {
   const { city, role, userId } = req.body;
-  console.log(city, role, userId);
+  // console.log(city, role, userId);
   try {
     db.query(
       "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.city=? and a.id!=? and b.role=?;",
@@ -73,7 +73,7 @@ router.post("/getRequestsByCity", async (req, res) => {
           console.log(err);
           return res.send(err);
         } else {
-          console.log(rows);
+          // console.log(rows);
           return res.send(rows);
         }
       }
@@ -91,7 +91,7 @@ router.get("/getiddata/:id", async (req, res) => {
       "select a.id,a.email,a.phoneno,a.name,a.city,b.price,b.age,b.experience from users as a inner join workers as b on a.id=b.userId where a.id=?",
       [id],
       (err, rows) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         res.send(rows);
       }
     );

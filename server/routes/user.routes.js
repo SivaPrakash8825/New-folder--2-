@@ -16,7 +16,7 @@ router.post("/setUserDetails", (req, res) => {
       "insert into userdetails values(?,?,?)",
       [uqId, userid, address],
       (err, result) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
 
         return res.send({
           status: "noerror",
@@ -41,7 +41,7 @@ router.get("/getUserDetails/:id", (req, res) => {
       "select l.id,l.email,l.phoneno,l.name,l.city,l.regDate,u.id as uid,u.address from users l inner join userdetails u on l.id=u.userid  and l.id = ?",
       [id],
       (err, result) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         else {
           if (result.length == 0) {
             return res.send({

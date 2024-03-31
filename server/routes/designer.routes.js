@@ -24,8 +24,8 @@ router.post("/designerdata", (req, res) => {
       "insert into Designerdata values(?,?,?,?,?)",
       [uqId, userId, price, age, experience],
       (err, rows) => {
-        if (err) console.log(err);
-        console.log(rows);
+        if (err) return console.log(err);
+        // console.log(rows);
       }
     );
   } catch (error) {
@@ -43,7 +43,7 @@ router.post("/updateprice", (req, res) => {
       "update Designerdata set price=? where upId=?",
       [price, id],
       (err, rows) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         res.send({
           msg: "updated",
         });
@@ -72,7 +72,7 @@ router.get("/getbycity/:city", (req, res) => {
 router.get("/getiddata/:id", (req, res) => {
   const { id } = req.params;
   db.query("select * from Designerdata where userId=?", [id], (err, rows) => {
-    if (err) console.log(err);
+    if (err) return console.log(err);
     res.send({ data: rows });
   });
 });

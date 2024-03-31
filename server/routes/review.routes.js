@@ -12,8 +12,8 @@ router.post("/reviewdata", (req, res) => {
     [uqId, receiverid, senderid, rating, review],
 
     (err, rows) => {
-      if (err) console.log(err);
-      console.log(rows);
+      if (err) return console.log(err);
+      // console.log(rows);
     }
   );
 });
@@ -25,8 +25,8 @@ router.get("/getrate", (req, res) => {
     "select u.name,u.city,r.rating,r.review  from Ratingtable as r inner join user as u on u.id=r.senderid where r.Receiverid=?",
     [receiverid],
     (err, rows) => {
-      if (err) console.log(err);
-      console.log(rows);
+      if (err) return console.log(err);
+      // console.log(rows);
       res.send({ data: rows });
     }
   );

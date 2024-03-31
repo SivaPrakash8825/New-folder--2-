@@ -114,7 +114,7 @@ const Header = () => {
           </>
         ) : (
           <>
-            {user?.role !== "user" && (
+            {user?.role !== "user" ? (
               <Link href={"/requests"}>
                 <h1
                   className={`relative before:absolute before:contents-[''] ${
@@ -122,6 +122,16 @@ const Header = () => {
                   }  before:transition-all origin-center before:h-1 before:bg-pri before:top-full before:left-0  rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 p-2`}
                 >
                   Requests
+                </h1>
+              </Link>
+            ) : (
+              <Link href={"/booked"}>
+                <h1
+                  className={`relative before:absolute before:contents-[''] ${
+                    pathname == "/booked" ? "before:w-full" : "before:w-0"
+                  }  before:transition-all origin-center before:h-1 before:bg-pri before:top-full before:left-0  rounded-md hover:bg-gray-200 dark:hover:bg-gray-800 p-2`}
+                >
+                  Booked
                 </h1>
               </Link>
             )}

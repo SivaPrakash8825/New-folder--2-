@@ -24,8 +24,8 @@ router.post("/electriciandata", (req, res) => {
       "insert into Electriciandata values(?,?,?,?,?)",
       [uqId, userId, price, age, experience],
       (err, rows) => {
-        if (err) console.log(err);
-        console.log(rows);
+        if (err) return console.log(err);
+        // console.log(rows);
       }
     );
   } catch (error) {
@@ -43,7 +43,7 @@ router.post("/updateprice", (req, res) => {
       "update Electriciandata set price=? where upId=?",
       [price, id],
       (err, rows) => {
-        if (err) console.log(err);
+        if (err) return console.log(err);
         res.send({
           msg: "updated",
         });
@@ -80,7 +80,7 @@ router.get("/getiddata/:id", (req, res) => {
     "select * from Electriciandata where userId=?",
     [id],
     (err, rows) => {
-      if (err) console.log(err);
+      if (err) return console.log(err);
       res.send({ data: rows });
     }
   );

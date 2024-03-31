@@ -1,3 +1,4 @@
+import BookedCard from "@/components/booked/BookedCard";
 import RequestCard from "@/components/requests/RequestCard";
 import Title from "@/components/titles/Title";
 import useUser from "@/store/useUser";
@@ -5,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const requests = () => {
+const booked = () => {
   const [requests, setRequests] = useState<RequestProps[]>([]);
   const user = useUser((state) => state.user);
   const { data } = useQuery({
@@ -14,7 +15,7 @@ const requests = () => {
       console.log("requets in");
 
       return await axios.get<RequestProps[]>(
-        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/book/requested/${user?.id}`,
+        `${process.env.NEXT_PUBLIC_SERVER_ENDPOINT}/api/book/booked/${user?.id}`,
         { withCredentials: true }
       );
     },
@@ -39,15 +40,15 @@ const requests = () => {
           <Title>My Requests</Title>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-8">
             {requests?.map((data, i) => (
-              <RequestCard data={data} key={i} />
+              <BookedCard data={data} key={i} />
             ))}
           </div>
         </>
       ) : (
-        <Title>No Requests</Title>
+        <Title>No Booked</Title>
       )}
     </main>
   );
 };
 
-export default requests;
+export default booked;
